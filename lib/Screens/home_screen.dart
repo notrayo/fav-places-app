@@ -1,4 +1,5 @@
 import 'package:favorite_places/Screens/add_place_form.dart';
+import 'package:favorite_places/widgets/places_list.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,30 +13,24 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Added Places ...'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AddPlace(),
-                    ));
-              },
-              icon: const Icon(
-                Icons.add_location_outlined,
-                color: Colors.white,
-                size: 30,
-              ))
-        ],
-      ),
-      body: const Center(
-        child: Text(
-          'No favourite places added yet',
-          style: TextStyle(color: Colors.white),
+        appBar: AppBar(
+          title: const Text('Added Places ...'),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddPlace(),
+                      ));
+                },
+                icon: const Icon(
+                  Icons.add_location_outlined,
+                  color: Colors.white,
+                  size: 30,
+                ))
+          ],
         ),
-      ),
-    );
+        body: PlacesList(places: []));
   }
 }

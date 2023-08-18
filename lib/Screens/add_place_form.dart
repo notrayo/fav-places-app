@@ -1,11 +1,36 @@
+import 'package:favorite_places/Screens/home_screen.dart';
+import 'package:favorite_places/providers/places_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddPlace extends StatelessWidget {
+class AddPlace extends ConsumerStatefulWidget {
   AddPlace({super.key});
+
+  @override
+  ConsumerState<AddPlace> createState() => _AddPlaceState();
+}
+
+class _AddPlaceState extends ConsumerState<AddPlace> {
   final _formKey = GlobalKey<FormState>();
 
+  final _locationTitleController = TextEditingController();
+
+  @override
+  void dispose() {
+    _locationTitleController.dispose();
+    super.dispose();
+  }
+
+  //@override
   void _savePlace() {
-    _formKey.currentState!.validate();
+    final enteredText = _locationTitleController.text;
+
+    if (_formKey.currentState!.validate()) {
+      ref.read(userPlacesProvider.notifier).addPlace(enteredText);
+      _locationTitleController.clear();
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: ((context) => const HomeScreen())));
+    }
   }
 
   @override
@@ -15,16 +40,19 @@ class AddPlace extends StatelessWidget {
         title: const Text('Enter description of location'),
       ),
       body: Padding(
-        padding: EdgeInsets.all(12),
+        padding: const EdgeInsets.all(12),
         child: Form(
             key: _formKey,
             child: Column(
               children: [
                 TextFormField(
+                  controller: _locationTitleController,
                   maxLength: 50,
                   decoration: const InputDecoration(
                     label: Text('Location Description'),
                   ),
+                  style: TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground),
                   validator: (value) {
                     if (value == null ||
                         value.isEmpty ||
@@ -38,18 +66,22 @@ class AddPlace extends StatelessWidget {
                   //   _enteredName = value!;
                   // },
                 ),
-                ElevatedButton(
+                const SizedBox(
+                  height: 15,
+                ),
+                ElevatedButton.icon(
                   onPressed: _savePlace,
+                  icon: const Icon(Icons.add),
                   style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
                       //backgroundColor: const Color.fromARGB(255, 240, 208, 24),
                       padding: const EdgeInsets.symmetric(
-                        horizontal: 30,
-                        vertical: 12,
+                        horizontal: 20,
+                        vertical: 10,
                       )),
-                  child: const Text(
+                  label: const Text(
                     'Add Place',
                     style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),

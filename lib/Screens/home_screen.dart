@@ -1,17 +1,15 @@
 import 'package:favorite_places/Screens/add_place_form.dart';
+import 'package:favorite_places/providers/places_provider.dart';
 import 'package:favorite_places/widgets/places_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userPlaces = ref.watch(userPlacesProvider);
     return Scaffold(
         appBar: AppBar(
           title: const Text('Added Places ...'),
@@ -31,6 +29,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 ))
           ],
         ),
-        body: PlacesList(places: []));
+        body: PlacesList(places: userPlaces));
   }
 }

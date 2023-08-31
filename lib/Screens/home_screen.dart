@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
                       ));
                 },
                 icon: const Icon(
-                  Icons.add_location_outlined,
+                  Icons.add_location_alt,
                   color: Colors.white,
                   size: 30,
                 ))

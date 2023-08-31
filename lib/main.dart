@@ -38,6 +38,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Fav Places', theme: theme, home: const HomeScreen());
+        debugShowCheckedModeBanner: false,
+        title: 'Fav Places',
+        theme: theme,
+        home: const HomeScreen());
   }
 }

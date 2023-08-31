@@ -3,6 +3,7 @@ import 'package:favorite_places/providers/places_provider.dart';
 import 'package:favorite_places/widgets/image_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'dart:io';
 
 class AddPlace extends ConsumerStatefulWidget {
   AddPlace({super.key});
@@ -13,6 +14,8 @@ class AddPlace extends ConsumerStatefulWidget {
 
 class _AddPlaceState extends ConsumerState<AddPlace> {
   final _formKey = GlobalKey<FormState>();
+
+  File? _selectedImage;
 
   final _locationTitleController = TextEditingController();
 
@@ -27,7 +30,9 @@ class _AddPlaceState extends ConsumerState<AddPlace> {
     final enteredText = _locationTitleController.text;
 
     if (_formKey.currentState!.validate()) {
-      ref.read(userPlacesProvider.notifier).addPlace(enteredText);
+      ref
+          .read(userPlacesProvider.notifier)
+          .addPlace(enteredText, _selectedImage!);
       _locationTitleController.clear();
       Navigator.of(context)
           .push(MaterialPageRoute(builder: ((context) => const HomeScreen())));
@@ -71,7 +76,11 @@ class _AddPlaceState extends ConsumerState<AddPlace> {
                   const SizedBox(
                     height: 15,
                   ),
-                  const ImageInput(),
+                  ImageInput(
+                    onTakeImage: (image) {
+                      _selectedImage = image;
+                    },
+                  ),
                   const SizedBox(
                     height: 15,
                   ),

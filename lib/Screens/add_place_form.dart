@@ -18,6 +18,7 @@ class _AddPlaceState extends ConsumerState<AddPlace> {
   File? _selectedImage;
 
   final _locationTitleController = TextEditingController();
+  final _locationDescriptionController = TextEditingController();
 
   @override
   void dispose() {
@@ -28,12 +29,14 @@ class _AddPlaceState extends ConsumerState<AddPlace> {
   //@override
   void _savePlace() {
     final enteredText = _locationTitleController.text;
+    final enteredDescription = _locationDescriptionController.text;
 
     if (_formKey.currentState!.validate()) {
       ref
           .read(userPlacesProvider.notifier)
-          .addPlace(enteredText, _selectedImage!);
+          .addPlace(enteredText, _selectedImage!, enteredDescription);
       _locationTitleController.clear();
+      _locationDescriptionController.clear();
       Navigator.of(context)
           .push(MaterialPageRoute(builder: ((context) => const HomeScreen())));
     }
@@ -83,6 +86,24 @@ class _AddPlaceState extends ConsumerState<AddPlace> {
                   ),
                   const SizedBox(
                     height: 15,
+                  ),
+                  TextFormField(
+                    controller: _locationDescriptionController,
+                    decoration: const InputDecoration(
+                        label: Text('Add some information about the place')),
+                    style: TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground),
+                    validator: (value) {
+                      if (value == null ||
+                          value.isEmpty ||
+                          value.trim().length <= 1) {
+                        return 'please enter some info about the place';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 35,
                   ),
                   ElevatedButton.icon(
                     onPressed: _savePlace,
